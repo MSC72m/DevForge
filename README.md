@@ -4,7 +4,16 @@ Unified environment, skills vault, configuration store, and reproduction harness
 
 ---
 
-## 1. Motivation & Architecture
+## 1. Upstream Respect & Author Licensing
+
+DevForge tracks and respects upstream package provenance:
+- **Upstream Open Skills**: Managed via the ecosystem package manager (`npx skills`). Installed skills are tracked with cryptographic folder hashes, original source URLs (e.g. `mattpocock/skills`, `vercel-labs/skills`, `addyosmani/agent-skills`), and upstream commit revisions inside `skills-lock.json`.
+- **License Preservation**: Each skill retains its original license, frontmatter, author credit, and attribution (`CREDITS.md`, `README.md`, `metadata.json`).
+- **One-Command Upstream Updates**: Run `./scripts/update-skills.sh` to pull latest changes from upstream GitHub repositories without losing custom configurations or symlinks.
+
+---
+
+## 2. Architecture & Symlink Layout
 
 Different AI coding harnesses store configuration and skills in different filesystem paths:
 - **OMP**: `~/.omp/agent/skills/` & `~/.omp/agent/mcp.json`
@@ -13,23 +22,22 @@ Different AI coding harnesses store configuration and skills in different filesy
 - **OpenCode**: `~/.config/opencode/skills/` & `opencode.json`
 - **Codex**: `~/.codex/skills/` & `config.toml`
 
-Maintaining separate sets of skills or diverging MCP/provider configs across these harnesses causes skill drift, missing tools, and broken prompt context.
-
 ### Single Source of Truth
 DevForge centralizes all skills under `~/.agents/skills/`. All agent harnesses point directly to this central vault via managed symlinks. A skill added or tuned once is immediately accessible across all environments.
 
 ---
 
-## 2. Directory Layout
+## 3. Directory Layout
 
 ```text
 DevForge/
-├── skills/                  # Master skill vault (75+ skills: SDD, TDD, YAGNI, unslop, etc.)
+├── skills/                  # Master skill vault (76+ skills: SDD, TDD, YAGNI, unslop, etc.)
 │   ├── unslop/              # AI writing & pattern removal
 │   ├── yagni/               # Zero-overhead simplicity enforcement
 │   ├── spec-driven-development/
 │   ├── test-driven-development/
 │   └── ...
+├── skills-lock.json         # Cryptographic provenance & upstream Git origins
 ├── configs/
 │   ├── pi/                  # Pi settings & installed package registry
 │   ├── omp/                 # OMP models, compaction order, and statusLine tuning
@@ -37,40 +45,35 @@ DevForge/
 │   ├── codex/               # Codex configurations & trusted projects
 │   └── mcp/                 # Canonical MCP server manifests (Playwright, etc.)
 └── scripts/
-    └── sync-skills.sh       # One-shot symlinker & synchronization script
+    ├── sync-skills.sh       # One-shot symlinker & environment reproduction script
+    └── update-skills.sh     # Upstream update runner (via npx skills update)
 ```
 
 ---
 
-## 3. Quickstart & Environment Reproduction
+## 4. Workflows
 
-On any new or existing machine:
-
+### Reproduce Environment on a New Machine
 ```bash
-# 1. Clone DevForge
 git clone https://github.com/MSC72m/DevForge.git ~/code/DevForge
 cd ~/code/DevForge
-
-# 2. Run sync script
 ./scripts/sync-skills.sh
 ```
 
-This ensures:
-1. `~/.agents/skills/` receives all skills tracked in the repository.
-2. `pi`, `omp`, `claude`, `opencode`, and `codex` are symlinked to `~/.agents/skills/`.
-3. MCP configurations (`Playwright`, etc.) are linked into `pi` and `omp`.
+### Pull Upstream Updates from Original Authors
+```bash
+cd ~/code/DevForge
+./scripts/update-skills.sh
+git commit -am "chore(skills): sync upstream updates"
+git push origin main
+```
 
----
-
-## 4. Key Rules for Agents Adding Skills
-
-When an AI agent creates or upgrades a skill:
-1. **Always edit in `~/.agents/skills/<skill-name>/SKILL.md`** (or the target symlinked directory). Never break the symlink with a direct directory overwrite.
-2. Keep the skill focused, adhering to the `yagni` and `unslop` guidelines.
-3. Commit and push the changes back to `DevForge` so other devices stay in sync:
+### Adding New Skills
+1. For open ecosystem skills:
    ```bash
-   cd ~/code/DevForge
-   cp -R ~/.agents/skills/* ./skills/
-   git commit -am "feat: add/update skill <skill-name>"
-   git push origin main
+   npx skills add <github-owner/repo> -g
+   ./scripts/update-skills.sh
    ```
+2. For custom authored skills:
+   - Create `~/.agents/skills/<skill-name>/SKILL.md`.
+   - Run `./scripts/update-skills.sh` to mirror into DevForge and re-link all harnesses.
