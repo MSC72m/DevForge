@@ -1,0 +1,23 @@
+{
+  "lastChangelogVersion": "0.87.1",
+  "theme": "cosmic-lagoon",
+  "packages": [
+    "npm:pi-subagents",
+    "npm:@dietrichgebert/ponytail",
+    "npm:@narumitw/pi-plan-mode",
+    "npm:pi-web-search",
+    "npm:pi-antigravity",
+    "npm:pi-lmstudio",
+    "npm:awesome-pi-themes",
+    "npm:@sreetej510/pi-usage",
+    "npm:@narumitw/pi-lsp",
+    "git:github.com/algal/pi-openai-server-compaction",
+    "git:github.com/coctostan/pi-superpowers",
+    "npm:pi-impeccable-skill",
+    "npm:pi-caveman",
+    "npm:pi-9router-ext",
+    "npm:@henryqw/pi-ask-question",
+    "npm:pi-cache-optimizer",
+    "npm:pi-unslop"
+  ]
+}
