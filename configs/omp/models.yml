@@ -1,8 +1,11 @@
 providers:
   9router:
     baseUrl: "http://localhost:20128/v1"
-    apiKey: "${NINEROUTER_API_KEY}"
+    apiKey: "sk-93ceb0a6c463464c-cp6h6g-e87435fc"
     api: "openai-completions"
     discovery:
       type: "openai-models-list"
       injectV1: false
+    compat:
+      supportsLongPromptCacheRetention: true
+      supportsUsageInStreaming: true
