@@ -1,0 +1,10 @@
+{
+  "extensions": [
+    "/Users/msc8/.pi/agent/npm/node_modules/@dietrichgebert/ponytail/pi-extension/index.js",
+    "/Users/msc8/.pi/agent/npm/node_modules/@henryqw/pi-ask-question/extensions/ask-question.ts",
+    "/Users/msc8/.pi/agent/npm/node_modules/@narumitw/pi-lsp/dist/index.ts",
+    "/Users/msc8/.pi/agent/npm/node_modules/@sreetej510/pi-usage/dist/index.js",
+    "/Users/msc8/.pi/agent/npm/node_modules/pi-caveman/extensions/caveman.ts",
+    "/Users/msc8/.pi/agent/npm/node_modules/pi-impeccable-skill/extensions/impeccable.js"
+  ]
+}
